@@ -39,7 +39,7 @@ enum RpsOutcome {
 
 
 
-fn evaluate_rps(left: RpsWeapon, right: RpsWeapon) -> RpsOutcome {
+fn evaluate_rps_outcome(left: &RpsWeapon, right: &RpsWeapon) -> RpsOutcome {
     let outv: RpsOutcome = match left {
         RpsWeapon::Rock =>  match right {
             RpsWeapon::Rock => RpsOutcome::Tie,
@@ -60,6 +60,24 @@ fn evaluate_rps(left: RpsWeapon, right: RpsWeapon) -> RpsOutcome {
     outv
 }
 
+fn weapon2score(weapon: &RpsWeapon) -> u32 {
+    match weapon {
+        RpsWeapon::Rock => 1,
+        RpsWeapon::Paper => 2,
+        RpsWeapon::Scissors => 3
+    }
+}
+
+fn evaluate_rps_score(left: &RpsWeapon, right: &RpsWeapon) -> u32 {
+    let outcome =  evaluate_rps_outcome(&left, &right);
+    let mut score: u32 = weapon2score(&left);
+    score += match outcome {
+        RpsOutcome::Win => 6,
+        RpsOutcome::Tie => 3,
+        RpsOutcome::Lose => 0
+    };
+    score
+}
 
 
 fn part1_soln () {
@@ -68,13 +86,16 @@ fn part1_soln () {
     ////////////
     let left = decode_left("A");
     let right = decode_right("X");
-    let outv = evaluate_rps(left, right);
+    let outv = evaluate_rps_outcome(&left, &right);
     
     match outv {
         RpsOutcome::Win => println!("Win"),
         RpsOutcome::Lose => println!("Lose"),
         RpsOutcome::Tie => println!("Tie")
     }
+
+    let score = evaluate_rps_score(&left, &right);
+    println!("{}", score)
 }
 
 
