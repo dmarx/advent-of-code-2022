@@ -81,21 +81,34 @@ fn evaluate_rps_score(left: &RpsWeapon, right: &RpsWeapon) -> u32 {
 
 
 fn part1_soln () {
-    let fp = File::open(Path::new("../data/input-day01.txt")).unwrap();
+    let fp = File::open(Path::new("../data/input-day02.txt")).unwrap();
     let file = BufReader::new(&fp);
     ////////////
-    let left = decode_left("A");
-    let right = decode_right("X");
-    let outv = evaluate_rps_outcome(&left, &right);
-    
-    match outv {
-        RpsOutcome::Win => println!("Win"),
-        RpsOutcome::Lose => println!("Lose"),
-        RpsOutcome::Tie => println!("Tie")
+    let mut running_score: u32 = 0;
+    for line in file.lines() {
+        let value_str: String = line.unwrap();
+        let mut tokens = value_str.split_whitespace();
+        let token_left = tokens.next().unwrap();
+        let token_right = tokens.next().unwrap();
+        let left = decode_left(token_left);
+        let right = decode_right(token_right);
+        let outcome = evaluate_rps_outcome(&left, &right);
+
+        match outcome {
+            RpsOutcome::Win => println!("Win"),
+            RpsOutcome::Lose => println!("Lose"),
+            RpsOutcome::Tie => println!("Tie")
+        }
+        let score = evaluate_rps_score(&left, &right);
+        //println!("{}", score)
+        running_score += score;
+        println!("{} {}", running_score, score);
     }
 
-    let score = evaluate_rps_score(&left, &right);
-    println!("{}", score)
+    //let left = decode_left("A");
+    //let right = decode_right("X");
+    //let outv = evaluate_rps_outcome(&left, &right);    
+
 }
 
 
