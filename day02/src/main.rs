@@ -101,7 +101,7 @@ fn part1_soln () {
         //right = me
         let right = decode_right(token_right);
         //let outcome = evaluate_rps_outcome(&left, &right);
-        let outcome = evaluate_rps_outcome(&right, &left);
+        //let outcome = evaluate_rps_outcome(&right, &left);
 
         // match outcome {
         //     RpsOutcome::Win => println!("Win"),
@@ -127,25 +127,16 @@ fn decode_right_outcome (val: &str) -> RpsOutcome {
 }
 
 fn infer_my_weapon (opponent: &RpsWeapon, nec_outcome: &RpsOutcome) -> RpsWeapon {
-    let mut outv: RpsWeapon = RpsWeapon::Rock; // this should init empty
+    //let mut outv: RpsWeapon = RpsWeapon::Rock; // this should init empty
     for weapon in [RpsWeapon::Rock, RpsWeapon::Paper, RpsWeapon::Scissors] {
-        let candidate = weapon.clone();
-        //if evaluate_rps_outcome(&opponent, &candidate) == nec_outcome {
-        let expected_outcome = evaluate_rps_outcome(&opponent, &candidate);
-        // if assert_eq!(&expected_outcome, nec_outcome) {
-        //    outv = weapon.clone();
-        //    break;
-        // } else {
-        //     continue;
-        // }
-        match evaluate_rps_outcome(&opponent, &candidate) {
-           //nec_outcome => break,
-           nec_outcome => outv = weapon.clone(),
-           _ => continue
-        };
-        
-    };
-    outv
+        //if &evaluate_rps_outcome(&opponent, &weapon) == nec_outcome {
+        if &evaluate_rps_outcome(&weapon, &opponent) == nec_outcome {
+            return weapon;
+        }
+    }
+    // thanks reddit! 
+    // https://www.reddit.com/r/rust/comments/zdao9b/noob_help_cant_get_around_type_errors_in_simple/
+    unreachable!()
 }
 
 
@@ -160,15 +151,19 @@ fn part2_soln () {
         let mut tokens = value_str.split_whitespace();
         let token_left = tokens.next().unwrap();
         let token_right = tokens.next().unwrap();
+        //println!("{} {}", &token_left, &token_right);
 
         let opponent_weapon = decode_left(token_left);
         let outcome = decode_right_outcome(&token_right);
         let my_weapon = infer_my_weapon(&opponent_weapon, &outcome);
 
         //let score = evaluate_rps_score(&outcome, &left);
-        //println!("{}", score)
-        running_score += weapon2score(&my_weapon);
-        running_score +=  outcome2score(&outcome);
+        let weapon_score = weapon2score(&my_weapon);
+        let outcome_score = outcome2score(&outcome);
+        //println!("{} {}", weapon_score, outcome_score);
+        //running_score += weapon2score(&my_weapon);
+        //running_score +=  outcome2score(&outcome);
+        running_score += weapon_score + outcome_score;
         //println!("{} {}", running_score, score);
     };
     println!("part2: {}", running_score);
