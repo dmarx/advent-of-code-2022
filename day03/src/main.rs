@@ -1,7 +1,10 @@
-use std::collections::hash_map::RandomState;
+//use std::collections::hash_map::RandomState;
 //use std::collections::hash_map::Intersection;
 use std::convert::TryInto;
 use std::collections::HashSet;
+use std::io::{BufReader, BufRead};
+use std::fs::File;
+use std::path::Path;
 
 // let a = HashSet::from([1, 2, 3]);
 // let b = HashSet::from([4, 2, 3, 4]);
@@ -70,18 +73,42 @@ fn common_items_binary(compartments: Vec<String>) -> String {
     common
 }
 
+fn score_rucksack(rucksack: &str) -> u32 {
+    let compartments = rucksack2compartments("foodbarf", Some(2));
+    let common = common_items_binary(compartments);
+    let mut outv: u32 = 0;
+    for c in common.chars() {
+        outv += char2priority(&c);
+    }
+    outv
+}
+
+fn soln_part1() {
+    let fp = File::open(Path::new("../data/input-day02.txt")).unwrap();
+    let file = BufReader::new(&fp);
+    ////////////
+    let mut running_score: u32 = 0;
+    for line in file.lines() {
+        let rucksack: String = line.unwrap();
+        running_score += score_rucksack(&rucksack)
+    }
+    println!("{}", running_score);
+}
+
 fn tests() {
     println!("Hello, world!");
-    let outv = rucksack2compartments("foodbarf", Some(2));
-    println!("{}", outv.len());
+    //let outv = rucksack2compartments("foodbarf", Some(2));
+    //println!("{}", outv.len());
     // for compartment in outv {
     //     println!("{}", compartment);
     // }
-    let common = common_items_binary(outv);
-    println!("{}", char2priority(&'A'));
-    println!("{}", common);
+    //let common = common_items_binary(outv);
+    //println!("{}", char2priority(&'A'));
+    //println!("{}", common);
+    println!("{}", score_rucksack("foodbarf"));
 }
 
 fn main() {
-    tests()
+    //tests()
+    soln_part1();
 }
