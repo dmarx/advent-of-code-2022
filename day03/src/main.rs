@@ -84,7 +84,7 @@ fn score_rucksack(rucksack: &str) -> u32 {
 }
 
 fn soln_part1() {
-    let fp = File::open(Path::new("../data/input-day02.txt")).unwrap();
+    let fp = File::open(Path::new("../data/input-day03.txt")).unwrap();
     let file = BufReader::new(&fp);
     ////////////
     let mut running_score: u32 = 0;
