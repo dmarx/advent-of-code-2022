@@ -70,7 +70,7 @@ fn common_items_binary(compartments: Vec<String>) -> String {
     common
 }
 
-fn main() {
+fn tests() {
     println!("Hello, world!");
     let outv = rucksack2compartments("foodbarf", Some(2));
     println!("{}", outv.len());
@@ -80,4 +80,8 @@ fn main() {
     let common = common_items_binary(outv);
     println!("{}", char2priority(&'A'));
     println!("{}", common);
+}
+
+fn main() {
+    tests()
 }
