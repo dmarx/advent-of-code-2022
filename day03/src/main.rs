@@ -74,10 +74,11 @@ fn common_items_binary(compartments: Vec<String>) -> String {
 }
 
 fn score_rucksack(rucksack: &str) -> u32 {
-    let compartments = rucksack2compartments("foodbarf", Some(2));
+    let compartments = rucksack2compartments(rucksack, Some(2));
     let common = common_items_binary(compartments);
     let mut outv: u32 = 0;
     for c in common.chars() {
+        //println!("{}",c);
         outv += char2priority(&c);
     }
     outv
@@ -95,8 +96,24 @@ fn soln_part1() {
     println!("{}", running_score);
 }
 
+fn soln_part1_test() {
+    let fp = File::open(Path::new("../data/input-day03-test.txt")).unwrap();
+    let file = BufReader::new(&fp);
+    ////////////
+    let mut running_score: u32 = 0;
+    for line in file.lines() {
+        let rucksack: String = line.unwrap();
+        println!("{}", rucksack);
+        let this_score = score_rucksack(&rucksack);
+        println!("{}", this_score);
+        running_score += this_score
+        //running_score += score_rucksack(&rucksack)
+    }
+    println!("{}", running_score);
+}
+
 fn tests() {
-    println!("Hello, world!");
+    //println!("Hello, world!");
     //let outv = rucksack2compartments("foodbarf", Some(2));
     //println!("{}", outv.len());
     // for compartment in outv {
@@ -105,7 +122,8 @@ fn tests() {
     //let common = common_items_binary(outv);
     //println!("{}", char2priority(&'A'));
     //println!("{}", common);
-    println!("{}", score_rucksack("foodbarf"));
+    //println!("{}", score_rucksack("foodbarf"));
+    soln_part1_test();
 }
 
 fn main() {
